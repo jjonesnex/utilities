@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# trifecta - Find the DNS Nameserver, SPF, DMARC, and DKIM for a given domain
+# Written by: Jay Jones 
+# Last updated on: 070623
+# -------------------------------------------------------
+# Set vars
+
+domain=$1
+
+[ $# -eq 0 ] && { echo "Usage: $0 <domain>"; exit 1; }
+
+echo " "
+echo "Copy and paste the following:"
+echo "===================="
+
+echo "  "
+echo "The nameservers for $domain are:"
+dig NS $domain +short
+
+echo "  "
+echo "The current Mail Exchanger for $domain is:"
+dig MX $domain +short
+
+echo "  "
+echo "The current SPF for $domain is:"
+dig txt $domain +short | grep spf
+
+echo "  "
+echo "The current DMARC for $domain is:"
+dig txt _dmarc.$domain +short
+
+echo "  "
+echo "The current DKIM for $domain is:"
+dig txt default._domainkey.$domain +short
+
+echo "  "
